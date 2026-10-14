@@ -11,7 +11,8 @@ Work for the Vesuvius Challenge Progress Prize (October 2026). Three parts, in o
    failure analyses: PHerc0841's 4.681 µm renders need 2× (not 4×) pooling; MAN5 fails for every model, and it is
    not misregistration, scale or depth.
 3. **A small model** (B0-256, 5.5 M parameters) trained only on 0139, 1667, Paris4 and 0814, which beats the released
-   `ink_9um` (34 M) on three of four sources neither model ever saw.
+   `ink_9um` (34 M) on three of four sources neither model ever saw. It does not beat the organizers' newer `v8-in`
+   on the fresh scroll PHerc1447.
 
 ![pyramid bug](docs/figures/pyramid_0841_w00_example.png)
 
@@ -52,9 +53,30 @@ Scroll 0841 is much harder (AUC ≈ 0.70–0.75 for everyone); its maps show str
 
 ![0841 w00](docs/figures/pred_pherc0841-w00.png)
 
-**In progress** (frozen protocol: [`reports/FINAL_EVAL_PROTOCOL_20261014.md`](reports/FINAL_EVAL_PROTOCOL_20261014.md)):
-the 30k-step final model, ours-only ensembles, the organizers' newer `v8-in` model on the same pixels, and
-PHerc1447 w058/w060 as an extra source unseen by all three model families.
+**Ensembles on identical pixels** (protocol frozen before scoring:
+[`reports/FINAL_EVAL_PROTOCOL_20261014.md`](reports/FINAL_EVAL_PROTOCOL_20261014.md); raw output in `results/`):
+
+| | 0841 | 0009B | 0500P2 | MAN5 | macro (primary) | pooled AUC | AP |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ours (B0 s42 + s43 + DINOv3) | **0.761** | **0.899** | **0.894** | 0.526 | 0.770 | **0.760** | **0.616** |
+| `ink_9um` (s42 + s43) | 0.728 | 0.883 | 0.864 | **0.621** | **0.774** | 0.751 | 0.598 |
+
+Ours wins three of four sources plus pooled AUC and AP, but on the predeclared primary statistic (macro over sources)
+ours is 0.004 lower (0.770 vs 0.774), entirely because of MAN5.
+
+**A fresh scroll, PHerc1447** (w058/w060; organizer release, unseen by our models, `ink_9um` and the `v8-in` base model).
+Our scoring reproduces the publisher's own `v8-in` numbers exactly (0.862 / 0.810).
+
+| | w058 | w060 | pooled | AP |
+|---|---:|---:|---:|---:|
+| ours B0-256 s43 | 0.788 | 0.720 | 0.745 | 0.540 |
+| organizer `v8-in` (83 M, Oct 2026), released zero-shot run | **0.863** | **0.812** | **0.832** | **0.676** |
+
+The organizers' newest model is clearly better here; our model claim is limited to the released `ink_9um`.
+
+![PHerc1447 w058](docs/figures/pred_pherc1447-w058.png)
+
+Still running: the 30k-step model, and `v8-in` on 0841 and MAN5 (both unseen by it).
 
 ## Honest limitations
 - The four test sources informed our design choices (patch size, loss, backbone): they are held-out sources, not an
