@@ -1,0 +1,73 @@
+# Vesuvius ink detection across scrolls: a data bug, a fair benchmark, and a smaller model that generalizes
+
+Work for the Vesuvius Challenge Progress Prize (October 2026). Three parts, in order of evidence strength:
+
+1. **A depth bug in the public ink-label surface pyramids.** In 18 of the 33 volumes of the organizers' `ink/` bucket,
+   levels 1–5 keep only the *first* slices of the 65-slice render instead of depth-pooling it, while their metadata
+   still declares an unchanged z-scale. Pixel-verified on all 18, with the 7 correctly built volumes as negative
+   controls (25/25 agree). It silently broke ink detection: the organizers' released `ink_9um` model scores
+   0.54 AUC on its own training source fed the published level 2, and 0.91–0.93 after our rebuild.
+2. **A held-out cross-scroll benchmark at verified physical scale**, scoring every model on identical pixels, with
+   failure analyses: PHerc0841's 4.681 µm renders need 2× (not 4×) pooling; MAN5 fails for every model, and it is
+   not misregistration, scale or depth.
+3. **A small model** (B0-256, 5.5 M parameters) trained only on 0139, 1667, Paris4 and 0814, which beats the released
+   `ink_9um` (34 M) on three of four sources neither model ever saw.
+
+![pyramid bug](docs/figures/pyramid_0841_w00_example.png)
+
+## 1. The pyramid bug
+
+| | Flagged volumes (declare z-scale 1) | Controls (declare z-scale 4) |
+|---|---|---|
+| Count | 18 | 7 (0139 w035–w044, MAN5) |
+| Level-2 slice k matches XY-pooled level-0 slice k (median r) | **0.857–0.99999** | −0.17 to 0.23 |
+| Level-2 slice k matches depth-pooled slices 4k..4k+3 (median r) | −0.16 to 0.20 | **0.80–0.96** |
+
+Affected: 0009B, 0500P2, 0814, all three 0841, six 1667, 0139 w016/w017/w028/w029/w030, `unused/500p2a`.
+Paris4 is unaffected (65 slices at every level). Reproduce: `python pyramid-repair/tools/verify_all_pyramids.py`.
+Fix: rebuild inputs from level 0 with a pooling factor chosen from the render's *physical* voxel size
+(`pyramid-repair/tools/pool_surface.py`). Details, evidence JSON and checksums: [`pyramid-repair/`](pyramid-repair/).
+
+![hypothesis test](docs/figures/pyramid_hypothesis_test.png)
+
+## 2–3. Held-out benchmark (AUC, reverse depth order, identical pixels)
+
+Training sources for our models: 0139, 1667, Paris4, 0814 (the same four scrolls `ink_9um` was trained on).
+None of the test sources below was used for training by our models or by `ink_9um`.
+
+| Model | Params | 0841 (scroll, 9.362 µm) | 0009B (fragment, IR labels) | 0500P2 (fragment, IR labels) | MAN5 |
+|---|---:|---:|---:|---:|---:|
+| ours B0-256 seed 43 | 5.5 M | **0.753** | **0.901** | 0.875 | 0.533 |
+| ours B0-256 seed 42 | 5.5 M | 0.730 | 0.885 | **0.887** | 0.538 |
+| ours V3 + DINOv3 ViT-S | ~25 M | 0.729 | 0.875 | 0.870 | 0.504 |
+| organizer `ink_9um` seed 42 | 34 M | 0.703 | 0.868 | 0.831 | **0.617** |
+| organizer `ink_9um` seed 43 | 34 M | 0.720 | 0.868 | 0.854 | 0.552 |
+
+Whole-fragment predictions (no hand-picked crops; left to right: labels, ours, `ink_9um` s42, `ink_9um` s43):
+
+![0009B](docs/figures/pred_pherc0009b-frag.png)
+![0500P2](docs/figures/pred_pherc0500p2-frag.png)
+
+Scroll 0841 is much harder (AUC ≈ 0.70–0.75 for everyone); its maps show stroke structure but no readable letters:
+
+![0841 w00](docs/figures/pred_pherc0841-w00.png)
+
+**In progress** (frozen protocol: [`reports/FINAL_EVAL_PROTOCOL_20261014.md`](reports/FINAL_EVAL_PROTOCOL_20261014.md)):
+the 30k-step final model, ours-only ensembles, the organizers' newer `v8-in` model on the same pixels, and
+PHerc1447 w058/w060 as an extra source unseen by all three model families.
+
+## Honest limitations
+- The four test sources informed our design choices (patch size, loss, backbone): they are held-out sources, not an
+  untouched final test. PHerc1447 is added as a fresh one.
+- MAN5 is a failure for every model ([`reports/MAN5_DIAGNOSIS_20261014.md`](reports/MAN5_DIAGNOSIS_20261014.md)).
+- Prior work: the depth-direction dependence of `ink_9um` and a held-out evaluation on 0841 were published first by
+  Andreas Hadjigeorgiou (ScrollPrize/villa#1867); the depth window study by Paulo Camillo. We build on both.
+
+## Layout
+- `pyramid-repair/`: bug report, evidence, survey/verify/rebuild tools.
+- `ink/`: trainer (`train_v2.py`), data preparation (`prep/`), evaluation and identical-pixel scoring (`eval/`),
+  Kaggle helpers (`kaggle/`), MAN5 diagnostics (`analysis/man5/`).
+- `vc-multiscan/`: multi-resolution scan registration and tifxyz rendering tools.
+- `reports/`: experiment log, audits and protocols. `docs/`: figures and the scripts that make them.
+
+Data are not redistributed; everything is read from the public Vesuvius Challenge buckets.

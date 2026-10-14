@@ -1,0 +1,27 @@
+{
+  "survey_volumes": 33,
+  "metadata_flagged": 18,
+  "pixel_verified_regions": 1,
+  "verified_slices": 17,
+  "same_index_xy_pool_correlation_min": 0.9998852029380287,
+  "same_index_xy_pool_correlation_max": 0.999918473491686,
+  "pixel_proof_scope": "One interior region per volume for all 25 volumes whose level 2 has 17 of 65 slices; the 0841 w00 single-region proof is kept separately.",
+  "physical_spacing_note": "Supply independently verified scan/render spacing; relative Zarr scales are not necessarily physical spacing.",
+  "pixel_tested_volumes": 25,
+  "flagged_volumes_pixel_verified_truncated": 18,
+  "unflagged_controls_pixel_verified_pooled": 7,
+  "metadata_pixel_agreement": "25/25",
+  "truncated_hypothesis_median_r_range": [
+    0.8572440008075255,
+    0.9999867565555076
+  ],
+  "pooled_hypothesis_median_r_range_on_flagged": [
+    -0.1601008834241852,
+    0.20098947590330052
+  ],
+  "controls_pooled_median_r_range": [
+    0.8009502892302043,
+    0.9586924307765002
+  ],
+  "all_volume_test_tool": "tools/verify_all_pyramids.py (one label-free interior region per volume, 16 informative slices each)"
+}

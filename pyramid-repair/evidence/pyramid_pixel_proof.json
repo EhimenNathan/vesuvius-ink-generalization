@@ -1,0 +1,142 @@
+{
+  "source": "https://huggingface.co/buckets/scrollprize/datasets/resolve/ink/841/w00/w00.zarr/",
+  "l0_chunk": "0.60.72",
+  "l2_chunk": "0.15.18",
+  "l0_shape": [
+    65,
+    15872,
+    18944
+  ],
+  "l2_shape": [
+    17,
+    3968,
+    4736
+  ],
+  "roi_l2_shape": [
+    17,
+    32,
+    32
+  ],
+  "rows": [
+    {
+      "slice": 0,
+      "xy_only_same_index_correlation": 0.9999146497201139,
+      "isotropic_pool_correlation": 0.9953789297884181,
+      "xy_only_mae": 0.32647705078125,
+      "isotropic_pool_mae": 1.5169219970703125
+    },
+    {
+      "slice": 1,
+      "xy_only_same_index_correlation": 0.999918473491686,
+      "isotropic_pool_correlation": 0.9755554121664071,
+      "xy_only_mae": 0.32891845703125,
+      "isotropic_pool_mae": 3.244354248046875
+    },
+    {
+      "slice": 2,
+      "xy_only_same_index_correlation": 0.9999155168125127,
+      "isotropic_pool_correlation": 0.9409508957186227,
+      "xy_only_mae": 0.33392333984375,
+      "isotropic_pool_mae": 4.3698883056640625
+    },
+    {
+      "slice": 3,
+      "xy_only_same_index_correlation": 0.999913910133697,
+      "isotropic_pool_correlation": 0.9037100116910555,
+      "xy_only_mae": 0.3212890625,
+      "isotropic_pool_mae": 5.2724151611328125
+    },
+    {
+      "slice": 4,
+      "xy_only_same_index_correlation": 0.9999167992873209,
+      "isotropic_pool_correlation": 0.8855833044301683,
+      "xy_only_mae": 0.32366943359375,
+      "isotropic_pool_mae": 5.6603546142578125
+    },
+    {
+      "slice": 5,
+      "xy_only_same_index_correlation": 0.9999136416868076,
+      "isotropic_pool_correlation": 0.8708949306005663,
+      "xy_only_mae": 0.33111572265625,
+      "isotropic_pool_mae": 5.9512481689453125
+    },
+    {
+      "slice": 6,
+      "xy_only_same_index_correlation": 0.9999184454514934,
+      "isotropic_pool_correlation": 0.8315072365274158,
+      "xy_only_mae": 0.33526611328125,
+      "isotropic_pool_mae": 6.3723602294921875
+    },
+    {
+      "slice": 7,
+      "xy_only_same_index_correlation": 0.9999172023591216,
+      "isotropic_pool_correlation": 0.8261208861177417,
+      "xy_only_mae": 0.32342529296875,
+      "isotropic_pool_mae": 6.549468994140625
+    },
+    {
+      "slice": 8,
+      "xy_only_same_index_correlation": 0.9999101813757951,
+      "isotropic_pool_correlation": 0.8171761155014033,
+      "xy_only_mae": 0.33734130859375,
+      "isotropic_pool_mae": 6.5218963623046875
+    },
+    {
+      "slice": 9,
+      "xy_only_same_index_correlation": 0.9999086305591314,
+      "isotropic_pool_correlation": 0.7872570067310459,
+      "xy_only_mae": 0.32855224609375,
+      "isotropic_pool_mae": 6.67315673828125
+    },
+    {
+      "slice": 10,
+      "xy_only_same_index_correlation": 0.9999038457193459,
+      "isotropic_pool_correlation": 0.7427459580379938,
+      "xy_only_mae": 0.3363037109375,
+      "isotropic_pool_mae": 7.0267486572265625
+    },
+    {
+      "slice": 11,
+      "xy_only_same_index_correlation": 0.9999043717898087,
+      "isotropic_pool_correlation": 0.6885864994367411,
+      "xy_only_mae": 0.32977294921875,
+      "isotropic_pool_mae": 7.3885040283203125
+    },
+    {
+      "slice": 12,
+      "xy_only_same_index_correlation": 0.9999023763765172,
+      "isotropic_pool_correlation": 0.6486567164803728,
+      "xy_only_mae": 0.3236083984375,
+      "isotropic_pool_mae": 7.4763336181640625
+    },
+    {
+      "slice": 13,
+      "xy_only_same_index_correlation": 0.9998949968834169,
+      "isotropic_pool_correlation": 0.6069506035837078,
+      "xy_only_mae": 0.34356689453125,
+      "isotropic_pool_mae": 7.5014495849609375
+    },
+    {
+      "slice": 14,
+      "xy_only_same_index_correlation": 0.9998948894563013,
+      "isotropic_pool_correlation": 0.5647293154578563,
+      "xy_only_mae": 0.322265625,
+      "isotropic_pool_mae": 7.6955108642578125
+    },
+    {
+      "slice": 15,
+      "xy_only_same_index_correlation": 0.9998874783310162,
+      "isotropic_pool_correlation": 0.5057313650212417,
+      "xy_only_mae": 0.3294677734375,
+      "isotropic_pool_mae": 7.9647216796875
+    },
+    {
+      "slice": 16,
+      "xy_only_same_index_correlation": 0.9998852029380287,
+      "isotropic_pool_correlation": 0.45520729463690984,
+      "xy_only_mae": 0.32330322265625,
+      "isotropic_pool_mae": 8.205078125
+    }
+  ],
+  "scope": "One aligned interior region, label-free. This does not prove the same pixel behavior in all flagged volumes."
+}

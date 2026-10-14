@@ -1,0 +1,26 @@
+ truncated  flagged=True   trunc_r=0.99996  pool_r=0.04295  16/16  0009b/auto_grown_20250919055754487_inp_hr_2um/auto_grown_20250919055754487_inp_hr_2um.zarr
+ truncated  flagged=True   trunc_r=0.99766  pool_r=-0.09403  16/16  0139/w016_2025010815/w016_2025010815.zarr
+ truncated  flagged=True   trunc_r=0.99347  pool_r=0.07167  16/16  0139/w017_2025010815/w017_2025010815.zarr
+ truncated  flagged=True   trunc_r=0.99877  pool_r=-0.15793  16/16  0139/w028_20260115221/w028_20260115221.zarr
+ truncated  flagged=True   trunc_r=0.96459  pool_r=0.00094  16/16  0139/w029_202601261946/w029_202601261946.zarr
+ truncated  flagged=True   trunc_r=0.97101  pool_r=0.07788  16/16  0139/w030_202601301912/w030_202601301912.zarr
+    pooled  flagged=False  trunc_r=0.14444  pool_r=0.81726  0/16  0139/w035_2026031718/w035_2026031718.zarr
+    pooled  flagged=False  trunc_r=-0.07808  pool_r=0.85414  0/16  0139/w039_2026030210/w039_2026030210.zarr
+    pooled  flagged=False  trunc_r=-0.17157  pool_r=0.93480  0/16  0139/w040_2025083102/w040_2025083102.zarr
+    pooled  flagged=False  trunc_r=-0.06624  pool_r=0.82206  0/16  0139/w041_2026010816/w041_2026010816.zarr
+    pooled  flagged=False  trunc_r=-0.12892  pool_r=0.85313  0/16  0139/w043_2026011217/w043_2026011217.zarr
+    pooled  flagged=False  trunc_r=0.01299  pool_r=0.80095  0/16  0139/w044_2026011522/w044_2026011522.zarr
+ truncated  flagged=True   trunc_r=0.99991  pool_r=0.02871  16/16  0500p2/-1/-1.zarr
+ truncated  flagged=True   trunc_r=0.85724  pool_r=-0.07262  16/16  1667/w013_20240304141531_2um/w013_20240304141531_2um.zarr
+ truncated  flagged=True   trunc_r=0.95928  pool_r=0.08901  16/16  1667/w018_20240304144031_2um/w018_20240304144031_2um.zarr
+ truncated  flagged=True   trunc_r=0.86234  pool_r=0.00819  16/16  1667/w023_20240304161941_2um/w023_20240304161941_2um.zarr
+ truncated  flagged=True   trunc_r=0.99489  pool_r=-0.13852  16/16  1667/w028_20251208130119156_2um/w028_20251208130119156_2um.zarr
+ truncated  flagged=True   trunc_r=0.92266  pool_r=0.07981  16/16  1667/w029_20251212185248662_2um/w029_20251212185248662_2um.zarr
+ truncated  flagged=True   trunc_r=0.98712  pool_r=0.01801  16/16  1667/w031_2025122323_2um/w031_2025122323_2um.zarr
+ truncated  flagged=True   trunc_r=0.99999  pool_r=-0.06530  16/16  814/814_46527_2um_try2/814_46527_2um_try2.zarr
+ truncated  flagged=True   trunc_r=0.99997  pool_r=-0.08360  16/16  841/auto_grown_20260220144552896/auto_grown_20260220144552896.zarr
+ truncated  flagged=True   trunc_r=0.99996  pool_r=-0.16010  16/16  841/auto_grown_20260220174252405/auto_grown_20260220174252405.zarr
+ truncated  flagged=True   trunc_r=0.99996  pool_r=0.20099  16/16  841/w00/w00.zarr
+    pooled  flagged=False  trunc_r=0.23020  pool_r=0.95869  0/16  man5/MAN5_outer_3/MAN5_outer_3.zarr
+ truncated  flagged=True   trunc_r=0.98495  pool_r=0.06493  16/16  unused/500p2a/500p2a.zarr
+metadata flag agrees with pixel verdict on 25/25 decided volumes (25 tested)
