@@ -1,5 +1,32 @@
 # Ink detection experiments (cross-scroll generalisation)
 
+## 2026-10-14: identical-pixel scoring under the frozen protocol (30k and v8-in-on-our-sources still pending)
+
+`train/score_final.py` (ensemble_audited, 300k seeded pixels per segment, reverse order, uint8 maps).
+| | 0841 | 0009B | 0500P2 | MAN5 | macro (primary) | pooled | AP |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| B0 s42 | 0.730 | 0.885 | 0.885 | 0.538 | 0.759 | 0.737 | 0.587 |
+| B0 s43 | 0.753 | 0.901 | 0.875 | 0.533 | 0.766 | 0.759 | 0.596 |
+| DINOv3 | 0.729 | 0.875 | 0.870 | 0.504 | 0.744 | 0.738 | 0.576 |
+| ours mean (s42+s43+DINOv3) | 0.761 | 0.899 | 0.894 | 0.526 | 0.770 | 0.760 | 0.616 |
+| ink_9um s42 | 0.703 | 0.868 | 0.829 | 0.619 | 0.755 | 0.734 | 0.560 |
+| ink_9um s43 | 0.720 | 0.868 | 0.852 | 0.553 | 0.748 | 0.732 | 0.566 |
+| ink_9um mean | 0.728 | 0.883 | 0.864 | 0.621 | **0.774** | 0.751 | 0.598 |
+| ours + ink_9um (secondary) | 0.764 | 0.902 | 0.897 | 0.568 | 0.783 | 0.769 | 0.631 |
+**On the predeclared primary (macro over 4 sources) our ensemble does not beat the ink_9um ensemble (0.770 vs 0.774)**:
+ours wins 0841/0009B/0500P2 and pooled AUC/AP; MAN5 decides the macro. Our single models beat each ink_9um seed.
+
+PHerc1447 (fresh source; prep5, 9.6 um, 17 depths; gate: v8-in released predictions reproduce the publisher's
+0.862/0.810 exactly on the native grid and 0.8625/0.8121 on our grid):
+| | w058 | w060 | pooled | AP |
+|---|---:|---:|---:|---:|
+| B0 s43 (rev; fwd 0.47) | 0.788 | 0.720 | 0.745 | 0.540 |
+| organizer v8-in base, released zero-shot run | **0.863** | **0.812** | **0.832** | **0.676** |
+| mean of both | 0.857 | 0.791 | 0.813 | 0.658 |
+v8-in beats our B0 on this unseen scroll by ~0.08 AUC, and averaging hurts. Our model claim is therefore limited to
+"beats the released ink_9um", not "beats the organizers' current model". 0343P was dropped: its supervision mask
+equals its ink labels (no negatives).
+
 ## 2026-10-14: restored-inventory result (forward evaluation COMPLETE)
 
 `ehimennathan/vesuvius-restored-forward-20261011` completed. Baseline reproduction gate passed exactly
@@ -280,7 +307,8 @@ Separate private evaluation job `ehimennathan/vesuvius-matched-evaluation-202610
 version 1 accepted without source errors. The full primary Paris4 comparison
 remains pending; no 30,000-step run has started.
 
-Latest status: private-code-dataset upload succeeded using the main account. Job
+Latest status: private-code-dataset upload succeeded using the explicitly
+supplied main-account credentials. Job
 `ehimennathan/vesuvius-matched-training-only-20261010` version 1 was accepted
 with no invalid sources and reported RUNNING. The 482-byte launcher verifies
 the mounted code SHA256. Training completion,

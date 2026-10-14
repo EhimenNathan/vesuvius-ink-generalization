@@ -1,0 +1,398 @@
+{
+ "config": {
+  "members": [
+   "ink9um42",
+   "ink9um43"
+  ],
+  "segments": [
+   "pherc0009b-frag",
+   "pherc0500p2-frag",
+   "pherc0841-ag4252405",
+   "pherc0841-ag4552896",
+   "pherc0841-w00",
+   "phercman5-outer3"
+  ],
+  "direction": "rev",
+  "max_combo": 1,
+  "combine": "mean",
+  "map_glob": "kout/bundles/*/maps/*.npz",
+  "label_glob": "kout/bundles/main/labels/data3/*.zarr",
+  "skip_regex": "",
+  "member_aliases": {},
+  "max_pixels": 300000,
+  "seed": 0
+ },
+ "population": {
+  "pherc0009b-frag": {
+   "supervised_pixels": 1585416,
+   "common_pixels": 1585416,
+   "labels": "kout/bundles/main/labels/data3/pherc0009b-frag.zarr",
+   "sampled_pixels": 300000
+  },
+  "pherc0500p2-frag": {
+   "supervised_pixels": 2797764,
+   "common_pixels": 2797764,
+   "labels": "kout/bundles/main/labels/data3/pherc0500p2-frag.zarr",
+   "sampled_pixels": 300000
+  },
+  "pherc0841-ag4252405": {
+   "supervised_pixels": 4846350,
+   "common_pixels": 4846350,
+   "labels": "kout/bundles/main/labels/data3/pherc0841-ag4252405.zarr",
+   "sampled_pixels": 300000
+  },
+  "pherc0841-ag4552896": {
+   "supervised_pixels": 3720168,
+   "common_pixels": 3720168,
+   "labels": "kout/bundles/main/labels/data3/pherc0841-ag4552896.zarr",
+   "sampled_pixels": 300000
+  },
+  "pherc0841-w00": {
+   "supervised_pixels": 6128158,
+   "common_pixels": 6128158,
+   "labels": "kout/bundles/main/labels/data3/pherc0841-w00.zarr",
+   "sampled_pixels": 300000
+  },
+  "phercman5-outer3": {
+   "supervised_pixels": 697410,
+   "common_pixels": 697410,
+   "labels": "kout/bundles/main/labels/data3/phercman5-outer3.zarr",
+   "sampled_pixels": 300000
+  }
+ },
+ "map_paths": {
+  "ink9um42|pherc0009b-frag|rev": "kout/bundles/main/maps/ink9um42__pherc0009b-frag__rev.npz",
+  "ink9um42|pherc0500p2-frag|rev": "kout/bundles/main/maps/ink9um42__pherc0500p2-frag__rev.npz",
+  "ink9um42|phercman5-outer3|rev": "kout/bundles/main/maps/ink9um42__phercman5-outer3__rev.npz",
+  "ink9um43|pherc0009b-frag|rev": "kout/bundles/main/maps/ink9um43__pherc0009b-frag__rev.npz",
+  "ink9um43|pherc0500p2-frag|rev": "kout/bundles/main/maps/ink9um43__pherc0500p2-frag__rev.npz",
+  "ink9um43|phercman5-outer3|rev": "kout/bundles/main/maps/ink9um43__phercman5-outer3__rev.npz",
+  "ink9um42|pherc0841-ag4252405|rev": "kout/bundles/acct2/maps/ink9um42__pherc0841-ag4252405__rev.npz",
+  "ink9um42|pherc0841-ag4552896|rev": "kout/bundles/acct2/maps/ink9um42__pherc0841-ag4552896__rev.npz",
+  "ink9um42|pherc0841-w00|rev": "kout/bundles/acct2/maps/ink9um42__pherc0841-w00__rev.npz",
+  "ink9um43|pherc0841-ag4252405|rev": "kout/bundles/acct2/maps/ink9um43__pherc0841-ag4252405__rev.npz",
+  "ink9um43|pherc0841-ag4552896|rev": "kout/bundles/acct2/maps/ink9um43__pherc0841-ag4552896__rev.npz",
+  "ink9um43|pherc0841-w00|rev": "kout/bundles/acct2/maps/ink9um43__pherc0841-w00__rev.npz"
+ },
+ "rank_threshold_is_not_calibrated_probability": true,
+ "results": {
+  "rev|ink9um42": {
+   "pooled": {
+    "auc": 0.7340428672242655,
+    "ap": 0.5597795061565707,
+    "n": 1800000,
+    "positive_fraction": 0.2657388888888889,
+    "f05_at_0_5": 0.5641818096760921,
+    "diagnostic_oracle_f05": 0.5738438774887146,
+    "diagnostic_oracle_threshold": 0.625
+   },
+   "per_segment": {
+    "pherc0009b-frag": {
+     "auc": 0.8677078349092254,
+     "ap": 0.7872159319225898,
+     "n": 300000,
+     "positive_fraction": 0.32059666666666664,
+     "f05_at_0_5": 0.744977909475567,
+     "diagnostic_oracle_f05": 0.752304517312543,
+     "diagnostic_oracle_threshold": 0.65
+    },
+    "pherc0500p2-frag": {
+     "auc": 0.8293163504261561,
+     "ap": 0.651924622801173,
+     "n": 300000,
+     "positive_fraction": 0.21317666666666665,
+     "f05_at_0_5": 0.6624524124242664,
+     "diagnostic_oracle_f05": 0.6694201589680787,
+     "diagnostic_oracle_threshold": 0.6
+    },
+    "pherc0841-ag4252405": {
+     "auc": 0.6639042434962393,
+     "ap": 0.4470042540704444,
+     "n": 300000,
+     "positive_fraction": 0.22829333333333332,
+     "f05_at_0_5": 0.47825277271974836,
+     "diagnostic_oracle_f05": 0.4944849220805505,
+     "diagnostic_oracle_threshold": 0.625
+    },
+    "pherc0841-ag4552896": {
+     "auc": 0.7355068807787657,
+     "ap": 0.6210924581762893,
+     "n": 300000,
+     "positive_fraction": 0.32463,
+     "f05_at_0_5": 0.6025175184617109,
+     "diagnostic_oracle_f05": 0.6180727132757163,
+     "diagnostic_oracle_threshold": 0.625
+    },
+    "pherc0841-w00": {
+     "auc": 0.6948213499970584,
+     "ap": 0.45554095553849705,
+     "n": 300000,
+     "positive_fraction": 0.22121333333333335,
+     "f05_at_0_5": 0.4741354642095775,
+     "diagnostic_oracle_f05": 0.4945944891109203,
+     "diagnostic_oracle_threshold": 0.675
+    },
+    "phercman5-outer3": {
+     "auc": 0.618517739827174,
+     "ap": 0.34855429911683244,
+     "n": 300000,
+     "positive_fraction": 0.28652333333333335,
+     "f05_at_0_5": 0.20636852857340862,
+     "diagnostic_oracle_f05": 0.4005134475603414,
+     "diagnostic_oracle_threshold": 0.05
+    }
+   },
+   "per_source": {
+    "0009B": {
+     "auc": 0.8677078349092254,
+     "ap": 0.7872159319225898,
+     "n": 300000,
+     "positive_fraction": 0.32059666666666664,
+     "f05_at_0_5": 0.744977909475567,
+     "diagnostic_oracle_f05": 0.752304517312543,
+     "diagnostic_oracle_threshold": 0.65
+    },
+    "0500P2": {
+     "auc": 0.8293163504261561,
+     "ap": 0.651924622801173,
+     "n": 300000,
+     "positive_fraction": 0.21317666666666665,
+     "f05_at_0_5": 0.6624524124242664,
+     "diagnostic_oracle_f05": 0.6694201589680787,
+     "diagnostic_oracle_threshold": 0.6
+    },
+    "0841": {
+     "auc": 0.703390848878582,
+     "ap": 0.5184526805220988,
+     "n": 900000,
+     "positive_fraction": 0.25804555555555553,
+     "f05_at_0_5": 0.5281977160419361,
+     "diagnostic_oracle_f05": 0.5456858045460969,
+     "diagnostic_oracle_threshold": 0.65
+    },
+    "MAN5": {
+     "auc": 0.618517739827174,
+     "ap": 0.34855429911683244,
+     "n": 300000,
+     "positive_fraction": 0.28652333333333335,
+     "f05_at_0_5": 0.20636852857340862,
+     "diagnostic_oracle_f05": 0.4005134475603414,
+     "diagnostic_oracle_threshold": 0.05
+    }
+   },
+   "macro_source_auc": 0.7547331935102845
+  },
+  "rev|ink9um43": {
+   "pooled": {
+    "auc": 0.731529515666419,
+    "ap": 0.5662001133385037,
+    "n": 1800000,
+    "positive_fraction": 0.2657388888888889,
+    "f05_at_0_5": 0.5752317857581015,
+    "diagnostic_oracle_f05": 0.5785217442322862,
+    "diagnostic_oracle_threshold": 0.575
+   },
+   "per_segment": {
+    "pherc0009b-frag": {
+     "auc": 0.8682926689179882,
+     "ap": 0.7884392665960906,
+     "n": 300000,
+     "positive_fraction": 0.32059666666666664,
+     "f05_at_0_5": 0.7523261113908464,
+     "diagnostic_oracle_f05": 0.7605436537994312,
+     "diagnostic_oracle_threshold": 0.7
+    },
+    "pherc0500p2-frag": {
+     "auc": 0.851817700705628,
+     "ap": 0.6875355876896573,
+     "n": 300000,
+     "positive_fraction": 0.21317666666666665,
+     "f05_at_0_5": 0.6707195697125052,
+     "diagnostic_oracle_f05": 0.6755719157200605,
+     "diagnostic_oracle_threshold": 0.575
+    },
+    "pherc0841-ag4252405": {
+     "auc": 0.6723821659024475,
+     "ap": 0.4164782248119643,
+     "n": 300000,
+     "positive_fraction": 0.22829333333333332,
+     "f05_at_0_5": 0.45894647477360934,
+     "diagnostic_oracle_f05": 0.45894647477360934,
+     "diagnostic_oracle_threshold": 0.49999999999999994
+    },
+    "pherc0841-ag4552896": {
+     "auc": 0.7547475666544666,
+     "ap": 0.6476991774088365,
+     "n": 300000,
+     "positive_fraction": 0.32463,
+     "f05_at_0_5": 0.6184535604016308,
+     "diagnostic_oracle_f05": 0.6208504261213121,
+     "diagnostic_oracle_threshold": 0.5499999999999999
+    },
+    "pherc0841-w00": {
+     "auc": 0.7176069216249339,
+     "ap": 0.4697065162915314,
+     "n": 300000,
+     "positive_fraction": 0.22121333333333335,
+     "f05_at_0_5": 0.4844652214838646,
+     "diagnostic_oracle_f05": 0.4981206639998454,
+     "diagnostic_oracle_threshold": 0.675
+    },
+    "phercman5-outer3": {
+     "auc": 0.5525741607199645,
+     "ap": 0.3179479536771562,
+     "n": 300000,
+     "positive_fraction": 0.28652333333333335,
+     "f05_at_0_5": 0.19577212422295964,
+     "diagnostic_oracle_f05": 0.3529657880338579,
+     "diagnostic_oracle_threshold": 0.05
+    }
+   },
+   "per_source": {
+    "0009B": {
+     "auc": 0.8682926689179882,
+     "ap": 0.7884392665960906,
+     "n": 300000,
+     "positive_fraction": 0.32059666666666664,
+     "f05_at_0_5": 0.7523261113908464,
+     "diagnostic_oracle_f05": 0.7605436537994312,
+     "diagnostic_oracle_threshold": 0.7
+    },
+    "0500P2": {
+     "auc": 0.851817700705628,
+     "ap": 0.6875355876896573,
+     "n": 300000,
+     "positive_fraction": 0.21317666666666665,
+     "f05_at_0_5": 0.6707195697125052,
+     "diagnostic_oracle_f05": 0.6755719157200605,
+     "diagnostic_oracle_threshold": 0.575
+    },
+    "0841": {
+     "auc": 0.7197802294623975,
+     "ap": 0.5237477226042807,
+     "n": 900000,
+     "positive_fraction": 0.25804555555555553,
+     "f05_at_0_5": 0.5314443513856234,
+     "diagnostic_oracle_f05": 0.5351475900022695,
+     "diagnostic_oracle_threshold": 0.575
+    },
+    "MAN5": {
+     "auc": 0.5525741607199645,
+     "ap": 0.3179479536771562,
+     "n": 300000,
+     "positive_fraction": 0.28652333333333335,
+     "f05_at_0_5": 0.19577212422295964,
+     "diagnostic_oracle_f05": 0.3529657880338579,
+     "diagnostic_oracle_threshold": 0.05
+    }
+   },
+   "macro_source_auc": 0.7481161899514945
+  },
+  "rev|ink9um42+ink9um43": {
+   "pooled": {
+    "auc": 0.7507615126178709,
+    "ap": 0.5976143242829888,
+    "n": 1800000,
+    "positive_fraction": 0.2657388888888889,
+    "f05_at_0_5": 0.609013472537146,
+    "diagnostic_oracle_f05": 0.6110240003202712,
+    "diagnostic_oracle_threshold": 0.525
+   },
+   "per_segment": {
+    "pherc0009b-frag": {
+     "auc": 0.8831566458050136,
+     "ap": 0.8144755222907314,
+     "n": 300000,
+     "positive_fraction": 0.32059666666666664,
+     "f05_at_0_5": 0.7879202416670302,
+     "diagnostic_oracle_f05": 0.7889876152111623,
+     "diagnostic_oracle_threshold": 0.525
+    },
+    "pherc0500p2-frag": {
+     "auc": 0.8642838045868116,
+     "ap": 0.7151115660776064,
+     "n": 300000,
+     "positive_fraction": 0.21317666666666665,
+     "f05_at_0_5": 0.7181722404235551,
+     "diagnostic_oracle_f05": 0.7193341457245993,
+     "diagnostic_oracle_threshold": 0.525
+    },
+    "pherc0841-ag4252405": {
+     "auc": 0.6813669355894028,
+     "ap": 0.45853408950619,
+     "n": 300000,
+     "positive_fraction": 0.22829333333333332,
+     "f05_at_0_5": 0.5095362575969197,
+     "diagnostic_oracle_f05": 0.512840963471048,
+     "diagnostic_oracle_threshold": 0.525
+    },
+    "pherc0841-ag4552896": {
+     "auc": 0.7654577096960277,
+     "ap": 0.668073775168288,
+     "n": 300000,
+     "positive_fraction": 0.32463,
+     "f05_at_0_5": 0.6492643028921746,
+     "diagnostic_oracle_f05": 0.6505982745979002,
+     "diagnostic_oracle_threshold": 0.525
+    },
+    "pherc0841-w00": {
+     "auc": 0.7211724944051383,
+     "ap": 0.4976239747957313,
+     "n": 300000,
+     "positive_fraction": 0.22121333333333335,
+     "f05_at_0_5": 0.5283197530078299,
+     "diagnostic_oracle_f05": 0.5488278594596694,
+     "diagnostic_oracle_threshold": 0.6
+    },
+    "phercman5-outer3": {
+     "auc": 0.6212917283982563,
+     "ap": 0.34909296578712584,
+     "n": 300000,
+     "positive_fraction": 0.28652333333333335,
+     "f05_at_0_5": 0.15719393836199558,
+     "diagnostic_oracle_f05": 0.39495854339402525,
+     "diagnostic_oracle_threshold": 0.05
+    }
+   },
+   "per_source": {
+    "0009B": {
+     "auc": 0.8831566458050136,
+     "ap": 0.8144755222907314,
+     "n": 300000,
+     "positive_fraction": 0.32059666666666664,
+     "f05_at_0_5": 0.7879202416670302,
+     "diagnostic_oracle_f05": 0.7889876152111623,
+     "diagnostic_oracle_threshold": 0.525
+    },
+    "0500P2": {
+     "auc": 0.8642838045868116,
+     "ap": 0.7151115660776064,
+     "n": 300000,
+     "positive_fraction": 0.21317666666666665,
+     "f05_at_0_5": 0.7181722404235551,
+     "diagnostic_oracle_f05": 0.7193341457245993,
+     "diagnostic_oracle_threshold": 0.525
+    },
+    "0841": {
+     "auc": 0.7283752091342243,
+     "ap": 0.5537861724226911,
+     "n": 900000,
+     "positive_fraction": 0.25804555555555553,
+     "f05_at_0_5": 0.5739845679670535,
+     "diagnostic_oracle_f05": 0.5807923547405031,
+     "diagnostic_oracle_threshold": 0.575
+    },
+    "MAN5": {
+     "auc": 0.6212917283982563,
+     "ap": 0.34909296578712584,
+     "n": 300000,
+     "positive_fraction": 0.28652333333333335,
+     "f05_at_0_5": 0.15719393836199558,
+     "diagnostic_oracle_f05": 0.39495854339402525,
+     "diagnostic_oracle_threshold": 0.05
+    }
+   },
+   "macro_source_auc": 0.7742768469810765
+  }
+ }
+}
