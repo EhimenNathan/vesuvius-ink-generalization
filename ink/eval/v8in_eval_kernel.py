@@ -13,6 +13,8 @@ subprocess.run("pip install -q 'zarr==2.18.7' 'numcodecs<0.16' safetensors", she
 import numpy as np, torch, zarr, cv2
 from huggingface_hub import snapshot_download
 T0 = time.time(); OUT = "/kaggle/working"; BUDGET = 11.0 * 3600
+CONFIG = dict(weights_glob="", tag="v8in", only_scrolls=[], other_pass=True)   # weights_glob: fine-tuned safetensors under /kaggle/input
+CONFIG.update(globals().get("CONFIG_OVERRIDE", {}))
 def log(*a): print(f"[{time.time() - T0:6.0f}s]", *a, flush=True)
 REV = "d89166b41a3f5fad7749b3d7c0fdd1bd3695d844"
 repo = snapshot_download("YoussefMoNader/ink-8um-v8in", revision=REV, allow_patterns=["*.json", "*.safetensors", "ink8um/*"],
@@ -21,13 +23,19 @@ sys.path.insert(0, repo)
 from ink8um import InkDetector
 from ink8um.inference import predict_stack, coverage_mask, tile_positions
 base = InkDetector.from_pretrained(repo).eval()
+if CONFIG["weights_glob"]:
+    from safetensors.torch import load_file
+    wp = sorted(glob.glob(f"/kaggle/input/**/{CONFIG['weights_glob']}", recursive=True))
+    if len(wp) != 1: raise RuntimeError(f"weights_glob must match exactly one file: {wp}")
+    base.load_state_dict(load_file(wp[0]), strict=True)
+    log("loaded fine-tuned weights", wp[0])
 log("v8-in loaded", sum(p.numel() for p in base.parameters()) / 1e6, "M params; GPUs", torch.cuda.device_count(),
     torch.cuda.get_device_name(0))
 model = torch.nn.DataParallel(base.cuda()) if torch.cuda.device_count() > 1 else base.cuda()
 for k in ("tile_size", "stride", "in_depth", "clip_max"): setattr(model, k, getattr(base, k))
 model.reverse_layers = base.reverse_layers
-UM = {"0841": 9.362, "MAN5": 9.596, "0009B": 9.6, "0500P2": 8.8}     # physical spacing of our prepared stores
-EXPOSURE = {"0841": "unseen", "MAN5": "unseen", "0009B": "v8-in validation source (other segment)", "0500P2": "v8-in training source"}
+UM = {"0841": 9.362, "MAN5": 9.596, "0009B": 9.6, "0500P2": 8.8, "1447": 9.6}     # physical spacing of our prepared stores
+EXPOSURE = {"0841": "unseen", "MAN5": "unseen", "0009B": "v8-in validation source (other segment)", "0500P2": "v8-in training source", "1447": "unseen"}
 TARGET_UM, DEPTH = 8.64, 24
 
 class TileVol:
@@ -72,6 +80,7 @@ def metrics(p, y):
 
 paths = sorted(glob.glob("/kaggle/input/**/data3b/*.zarr", recursive=True))
 paths += [p for p in sorted(glob.glob("/kaggle/input/**/data3/*.zarr", recursive=True)) if not os.path.basename(p).startswith("pherc0841")]   # 0841 comes only from data3b
+paths += sorted(glob.glob("/kaggle/input/**/data5/*.zarr", recursive=True))   # PHerc1447 (prep5, 9.6 um)
 seen, jobs = set(), []
 for p in paths:
     n = os.path.basename(p)[:-5]
@@ -84,6 +93,7 @@ rate = None
 def run_segment(n, p, which):
     global rate
     g = zarr.open_group(p, "r"); sc = g.attrs["scroll"]; um = UM[sc]
+    if CONFIG["only_scrolls"] and sc not in CONFIG["only_scrolls"]: return
     sup = g["sup"][:] > 0; ink = g["ink"][:] > 0
     if not sup.any(): return
     ys, xs = np.nonzero(sup); M = 64; H, W = sup.shape
@@ -125,17 +135,17 @@ def run_segment(n, p, which):
         m = sup[y0:y1, x0:x1] & cov
         res = metrics(pb[m], ink[y0:y1, x0:x1][m]); res["coverage_of_supervised"] = float(m.sum() / sup.sum())
         res["tiles_per_s"] = rate; info[dname] = res
-        np.savez_compressed(f"{OUT}/maps/v8in__{n}__{dname}.npz", p=(np.clip(pb, 0, 1) * 255).astype(np.uint8),
+        np.savez_compressed(f"{OUT}/maps/{CONFIG['tag']}__{n}__{dname}.npz", p=(np.clip(pb, 0, 1) * 255).astype(np.uint8),
                             cover=np.packbits(cov), cover_shape=np.array(cov.shape), bbox=np.array([y0, y1, x0, x1]))
         log("EVAL", n, dname, json.dumps(res))
-        json.dump(results, open(f"{OUT}/result_v8in.json", "w"), indent=1)
+        json.dump(results, open(f"{OUT}/result_{CONFIG['tag']}.json", "w"), indent=1)
     del stack
 
-for which, (n, p) in [("chosen", j) for j in jobs] + [("other", j) for j in jobs]:
+for which, (n, p) in [("chosen", j) for j in jobs] + ([("other", j) for j in jobs] if CONFIG["other_pass"] else []):
     if which == "other" and "label_free_choice" not in results["per_segment"].get(n, {}): continue
     try: run_segment(n, p, which)
     except Exception as e:
         import traceback; traceback.print_exc(); log("SEGMENT FAILED", n, repr(e))
         results["per_segment"].setdefault(n, {})["error"] = repr(e)
-json.dump(results, open(f"{OUT}/result_v8in.json", "w"), indent=1)
+json.dump(results, open(f"{OUT}/result_{CONFIG['tag']}.json", "w"), indent=1)
 log("ALLDONE")

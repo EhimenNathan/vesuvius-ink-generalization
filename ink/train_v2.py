@@ -280,6 +280,51 @@ class B0(nn.Module):
         super().__init__(); self.stem = Stem(16); self.net = SmallUNet(self.stem.out_ch)
     def forward(self, x): return self.net(self.stem(x[:, None]))
 
+class _REBN(nn.Module):
+    def __init__(self, i, o, d=1):
+        super().__init__(); self.c = nn.Conv2d(i, o, 3, padding=d, dilation=d, bias=False); self.b = nn.BatchNorm2d(o)
+    def forward(self, x): return F.relu(self.b(self.c(x)), True)
+def _up(x, ref): return F.interpolate(x, size=ref.shape[-2:], mode="bilinear", align_corners=False)
+class RSU(nn.Module):
+    """U2-Net residual U-block RSU-L (Qin et al. 2020); dilated=True gives RSU-4F (no pooling, dilations 1,2,4,8)."""
+    def __init__(self, L, i, m, o, dilated=False):
+        super().__init__(); self.L, self.dil = L, dilated
+        self.inp = _REBN(i, o)
+        ds = [1, 2, 4, 8] if dilated else [1] * (L - 1) + [2]
+        self.enc = nn.ModuleList([_REBN(o if k == 0 else m, m, ds[k]) for k in range(L)])
+        self.dec = nn.ModuleList([_REBN(2 * m, o if k == 0 else m, ds[k]) for k in range(L - 1)])
+    def forward(self, x):
+        hin = self.inp(x); h = hin; e = []
+        for k, c in enumerate(self.enc):
+            if k > 0 and not self.dil and k < self.L - 1: h = F.max_pool2d(h, 2, ceil_mode=True)
+            h = c(h); e.append(h)
+        d = e[-1]
+        for k in range(self.L - 2, -1, -1):
+            d = self.dec[k](torch.cat([d if self.dil else _up(d, e[k]), e[k]], 1))
+        return d + hin
+class U2Body(nn.Module):
+    """U2-Net 2D body (6 encoder stages, 5 decoder stages, fused side outputs); widths scaled by mid/out."""
+    def __init__(self, cin, m=24, o=96):
+        super().__init__()
+        self.e = nn.ModuleList([RSU(7, cin, m, o), RSU(6, o, m, o), RSU(5, o, m, o), RSU(4, o, m, o), RSU(4, o, m, o, True), RSU(4, o, m, o, True)])
+        self.d = nn.ModuleList([RSU(7, 2 * o, m, o), RSU(6, 2 * o, m, o), RSU(5, 2 * o, m, o), RSU(4, 2 * o, m, o), RSU(4, 2 * o, m, o, True)])
+        self.side = nn.ModuleList([nn.Conv2d(o, 1, 3, padding=1) for _ in range(6)]); self.fuse = nn.Conv2d(6, 1, 1)
+    def forward(self, x):
+        e = []
+        for k, blk in enumerate(self.e):
+            if k > 0: x = F.max_pool2d(x, 2, ceil_mode=True)
+            x = blk(x); e.append(x)
+        d = [e[-1]]; x = e[-1]
+        for k in range(4, -1, -1):
+            x = self.d[k](torch.cat([_up(x, e[k]), e[k]], 1)); d.insert(0, x)
+        sides = [_up(self.side[k](d[k]), d[0]) for k in range(6)]
+        return self.fuse(torch.cat(sides, 1))
+class V6(nn.Module):
+    """B0's 3D stem + U2-Net 2D body (U2-Net ablation, 2026-10-15)."""
+    def __init__(self):
+        super().__init__(); self.stem = Stem(16); self.net = U2Body(self.stem.out_ch, CONFIG.get("u2_mid", 24), CONFIG.get("u2_out", 96))
+    def forward(self, x): return self.net(self.stem(x[:, None]))
+
 class V1(nn.Module):
     def __init__(self, enc):
         super().__init__()
@@ -424,7 +469,7 @@ class V5(nn.Module):
             f = mix(f); feats.append(red(torch.cat([f.mean(2), f.amax(2)], 1)))
         return self.dec(feats, self.full(x[:, None]))
 
-model = {"B0": B0, "V1": lambda: V1(CONFIG["encoder"]), "V2": lambda: V2(CONFIG["encoder"]), "V3": lambda: V3(CONFIG["encoder"]), "V4": V4, "V5": lambda: V5(CONFIG["encoder"])}[CONFIG["model"]]().to(dev)
+model = {"B0": B0, "V1": lambda: V1(CONFIG["encoder"]), "V2": lambda: V2(CONFIG["encoder"]), "V3": lambda: V3(CONFIG["encoder"]), "V4": V4, "V5": lambda: V5(CONFIG["encoder"]), "V6": V6}[CONFIG["model"]]().to(dev)
 if CONFIG["model"] in ("V3", "V4", "V5"):
     pre = model.enc if hasattr(model, "enc") else nn.ModuleList([model.vstem, model.layers])
     enc_ids = {id(p) for p in pre.parameters()}

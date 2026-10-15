@@ -67,12 +67,18 @@ ours is 0.004 lower (0.770 vs 0.774), entirely because of MAN5.
 **A fresh scroll, PHerc1447** (w058/w060; organizer release, unseen by our models, `ink_9um` and the `v8-in` base model).
 Our scoring reproduces the publisher's own `v8-in` numbers exactly (0.862 / 0.810).
 
-| | w058 | w060 | pooled | AP |
-|---|---:|---:|---:|---:|
-| ours B0-256 s43 | 0.788 | 0.720 | 0.745 | 0.540 |
-| organizer `v8-in` (83 M, Oct 2026), released zero-shot run | **0.863** | **0.812** | **0.832** | **0.676** |
+| | w058 | w060 | pooled AUC |
+|---|---:|---:|---:|
+| ours B0-256 s43 | 0.788 | 0.720 | 0.745 |
+| ours B0-256 s42 | 0.775 | 0.723 | 0.733 |
+| ours V3 + DINOv3 ViT-S | 0.731 | 0.660 | 0.690 |
+| organizer `ink_9um` s43 | | | 0.682 |
+| organizer `ink_9um` s42 | | | 0.674 |
+| organizer `v8-in` (83 M, Oct 2026), released zero-shot run | **0.863** | **0.812** | **0.832** |
 
-The organizers' newest model is clearly better here; our model claim is limited to the released `ink_9um`.
+Our B0 beats `ink_9um` on this fresh scroll as well (+0.05 to +0.07), but the organizers' newest model is clearly
+better here; our model claim is limited to the released `ink_9um`. A fine-tune of `v8-in` on our corrected training
+inventory is in progress ([`reports/V8IN_FINETUNE_PROTOCOL_20261014.md`](reports/V8IN_FINETUNE_PROTOCOL_20261014.md)).
 
 ![PHerc1447 w058](docs/figures/pred_pherc1447-w058.png)
 

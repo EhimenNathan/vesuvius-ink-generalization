@@ -1,5 +1,38 @@
 # Ink detection experiments (cross-scroll generalisation)
 
+## 2026-10-15: PHerc1447 complete for our models and ink_9um (rev; pooled 300k/segment)
+| model | PHerc1447 rev AUC | (fwd) |
+|---|---:|---:|
+| ours B0 s43 | 0.745 | 0.477 |
+| ours B0 s42 | 0.733 | |
+| ours DINOv3 | 0.690 | 0.497 |
+| ink_9um s43 | 0.682 | 0.493 |
+| ink_9um s42 | 0.674 | 0.486 |
+| organizer v8-in (released zero-shot run) | **0.832** | |
+Our B0 beats ink_9um on this fresh scroll too (+0.05 to +0.07); v8-in leads by ~0.09. Reverse order confirmed for all.
+The `vesuvius-v8in-eval` session (0841/MAN5) shows a restart at 00:30 UTC; its first run's outputs are not available.
+Open-problem mapping (scrollprize.org/2026_open_problems): our work addresses #5 cross-scroll generalization and #2
+label/data quality; villa help-wanted #192/#193 ask for 3D labels, which this work does not provide.
+
+## 2026-10-15: U2-Net ablation (user request), predeclared before launch
+V6 = B0's 3D stem + U2-Net 2D body (RSU-7/6/5/4/4F/4F encoder, 5 RSU decoders, fused side outputs; mid 32, out 128;
+4.53 M params vs B0 5.54 M). Single fused output, no deep supervision (deviation from the paper). Comparator: the
+historical Paris4-held-out B0-256 Focal+Dice run, identical config (seed 42, 6000 iters, batch 16, TTA 4), 8-segment
+forward mean AUC 0.7048 (w00 .622, w01 .700, w02 .676, w03 .680, w05 .715, w06 .699, w07 .742, w09 .805).
+Rule: V6 counts as better only if its 8-segment mean exceeds 0.721 (0.7048 + seed noise 0.016) AND it improves at
+least 6/8 segments. Caveat: trainer revisions since the B0 run (coverage repair, evaluation guards) leave defaults equal.
+
+## 2026-10-14: v8-in fine-tune on our corrected inventory (protocol `V8IN_FINETUNE_PROTOCOL_20261014.md`)
+More results on PHerc1447 (rev): DINOv3 w058 0.731, w060 0.660, pooled 0.690 (B0 s43 0.745; v8-in 0.832).
+Smoke `vesuvius-v8in-ft-smoke` (second account) (12 steps) passed after one fix (inference batch 32 OOM on T4; now 8):
+- No training store has official validation-mask pixels, so the predeclared fallback holds out phercparis4-w09 and
+  pherc1667-w031 entirely (7.8 M validation pixels).
+- Depth order from training labels: base v8-in reads our aligned training representation as stored (AUC 0.817 vs
+  0.465 reversed), consistent with reversing the ink-bucket test renders.
+- Base v8-in validation AUC 0.771 (768-tile protocol will differ slightly). Peak memory 8.5 GB per T4 at 2 tiles/GPU;
+  about 4 tiles/s, i.e. 16 s per 64-tile step.
+Full run `vesuvius-v8in-ft-run1` launched 23:10 UTC: 1800 steps x 64 tiles, LR 1e-5 cosine, validation every 150.
+
 ## 2026-10-14: identical-pixel scoring under the frozen protocol (30k and v8-in-on-our-sources still pending)
 
 `train/score_final.py` (ensemble_audited, 300k seeded pixels per segment, reverse order, uint8 maps).
