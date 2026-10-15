@@ -88,7 +88,7 @@ inventory is in progress ([`reports/V8IN_FINETUNE_PROTOCOL_20261014.md`](reports
 
 ![PHerc1447 w058](docs/figures/pred_pherc1447-w058.png)
 
-Still running: the 30k-step model, and `v8-in` on 0841 and MAN5 (both unseen by it).
+Still running: `v8-in` on 0841 and MAN5 (both unseen by it), the `v8-in` fine-tune, and two U2-Net ablations (a 1.2 M-parameter U2-NetP and a 4.5 M U2-Net body on our 3D stem). The planned 30k-step B0 run was stopped after 12 h without completing; it produced no results.
 
 ## Honest limitations
 - The four test sources informed our design choices (patch size, loss, backbone): they are held-out sources, not an
