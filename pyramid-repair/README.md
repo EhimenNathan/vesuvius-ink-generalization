@@ -1,6 +1,6 @@
 # Depth-pyramid defect evidence and physical-scale-aware repair
 
-Local review draft, 2026-10-11. Nothing in this bundle has been published by this task.
+Evidence package, 2026-10-14. Reproduce every number below with the tools in `tools/`.
 
 Some ink-label surface pyramids have shortened depth while declaring unchanged depth scale. A 33-volume metadata survey flags 18 volumes. **All 18 are now pixel-verified** (2026-10-14, `tools/verify_all_pyramids.py`): in one label-free interior region per volume, every informative level-2 slice k matches the XY-pooled level-0 slice k (median r 0.857–0.99999) and not the 4×4×4 depth-pooled slab (median r −0.16 to 0.20). So level 2 holds the first 17 of 65 slices, i.e. only the top quarter of the depth range. The 7 surveyed volumes that do declare a z-scale of 4 (0139 w035–w044, MAN5) act as negative controls: all 7 match depth pooling (median r 0.80–0.96) and not truncation. Metadata flag and pixel verdict agree on 25/25 volumes; Paris4 (65 slices at every level) is not affected. The earlier single-region 0841 w00 proof (r 0.999885–0.999918 over 17 slices) is kept as `evidence/pyramid_pixel_proof.json`.
 
