@@ -27,7 +27,7 @@ Work for the Vesuvius Challenge Progress Prize (October 2026). Three parts, in o
 Affected: 0009B, 0500P2, 0814, all three 0841, six 1667, 0139 w016/w017/w028/w029/w030, `unused/500p2a`.
 Paris4 is unaffected (65 slices at every level). Reproduce: `python pyramid-repair/tools/verify_all_pyramids.py`.
 Fix: rebuild inputs from level 0 with a pooling factor chosen from the render's *physical* voxel size
-(`pyramid-repair/tools/pool_surface.py`). Details, evidence JSON and checksums: [`pyramid-repair/`](pyramid-repair/).
+(`pyramid-repair/tools/pool_surface.py`). Details, evidence JSON and checksums: [`pyramid-repair/`](pyramid-repair/). The bug report as filed: [`pyramid-repair/BUG_REPORT.md`](pyramid-repair/BUG_REPORT.md).
 
 ![hypothesis test](docs/figures/pyramid_hypothesis_test.png)
 
