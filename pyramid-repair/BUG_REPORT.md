@@ -1,4 +1,4 @@
-# ink/ label bucket: in 18 of 33 surface volumes, pyramid levels 1-5 keep only the first depth slices while declaring z-scale 1
+# ink/ label bucket: in 18 of 33 surface volumes, pyramid level 2 holds only the first 17 of 65 depth slices while declaring z-scale 1
 
 **In one sentence:** in 18 of the 33 surface volumes of the Hugging Face `scrollprize/datasets` `ink/` bucket, level 2 is the
 first 17 of the 65 rendered slices pooled only in XY, yet `.zattrs` declares an unchanged z-scale of 1, so anything
