@@ -1,5 +1,11 @@
 # Ink detection experiments (cross-scroll generalisation)
 
+## 2026-10-15: U2-NetP (lightweight) ablation, predeclared before launch
+Same as the V6 entry below but U2-NetP widths (mid 16, out 64): 1.15 M parameters total with the 3D stem (B0 5.54 M).
+Same comparator and rule: counts as better than B0-256 only if the 8-segment Paris4 forward mean exceeds 0.721 and
+at least 6/8 segments improve. Only if it passes is it trained on all four sources and scored on the test sources.
+The 30k-step B0 run was stopped by the user after >12 h without completing (no outputs).
+
 ## 2026-10-15: PHerc1447 complete for our models and ink_9um (rev; pooled 300k/segment)
 | model | PHerc1447 rev AUC | (fwd) |
 |---|---:|---:|

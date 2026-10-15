@@ -33,6 +33,8 @@ Fix: rebuild inputs from level 0 with a pooling factor chosen from the render's 
 
 ## 2–3. Held-out benchmark (AUC, reverse depth order, identical pixels)
 
+![AUC by held-out source](docs/figures/comparison_auc_by_source.png)
+
 Training sources for our models: 0139, 1667, Paris4, 0814 (the same four scrolls `ink_9um` was trained on).
 None of the test sources below was used for training by our models or by `ink_9um`.
 
@@ -52,6 +54,10 @@ Whole-fragment predictions (no hand-picked crops; left to right: labels, ours, `
 Scroll 0841 is much harder (AUC ≈ 0.70–0.75 for everyone); its maps show stroke structure but no readable letters:
 
 ![0841 w00](docs/figures/pred_pherc0841-w00.png)
+
+MAN5 is near chance for every model (diagnosis in `reports/MAN5_DIAGNOSIS_20261014.md`):
+
+![MAN5](docs/figures/pred_phercman5-outer3.png)
 
 **Ensembles on identical pixels** (protocol frozen before scoring:
 [`reports/FINAL_EVAL_PROTOCOL_20261014.md`](reports/FINAL_EVAL_PROTOCOL_20261014.md); raw output in `results/`):
@@ -98,4 +104,11 @@ Still running: the 30k-step model, and `v8-in` on 0841 and MAN5 (both unseen by 
 - `vc-multiscan/`: multi-resolution scan registration and tifxyz rendering tools.
 - `reports/`: experiment log, audits and protocols. `docs/`: figures and the scripts that make them.
 
-Data are not redistributed; everything is read from the public Vesuvius Challenge buckets.
+Data are not redistributed; everything is read from the public Vesuvius Challenge buckets. Code is MIT-licensed
+(`LICENSE`); figures derived from Vesuvius Challenge scans follow the data's CC BY-NC terms.
+
+## Open problems this addresses
+- Cross-scroll generalization (scrollprize.org 2026 open problems): a reproducible identical-pixel benchmark over five
+  never-trained-on sources, including the organizers' newest model.
+- Label and data quality: a silent depth defect in the public ink-label pyramids, with pixel evidence and a fix; a
+  diagnosis of why MAN5 fails for every model.
