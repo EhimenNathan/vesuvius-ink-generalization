@@ -1,8 +1,4 @@
 {
-  "DISCORD_DRAFT.md": {
-    "bytes": 1322,
-    "sha256": "b1a5030f3a8f301682b8cb03f297ff6e5ea4377c307bdad67530d2d7a0f2d1c9"
-  },
   "evidence/pyramid_pixel_all.json": {
     "bytes": 95941,
     "sha256": "b8f653ac6568308f13888cee46fde28ce74081ea5aef6f9d2a2ba0003d8ccf2f"
@@ -22,10 +18,6 @@
   "evidence/summary.json": {
     "bytes": 1145,
     "sha256": "fa72a7195c3ccb582b6d868d62642c3aa6158f537d30f2b1a0a637abad00bc33"
-  },
-  "GITHUB_ISSUE_DRAFT.md": {
-    "bytes": 2719,
-    "sha256": "c6561cc69504b1d0c7825e59e5d9b3bc2dad900ebef6b7d5c7d0263c01152843"
   },
   "README.md": {
     "bytes": 5006,
