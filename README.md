@@ -83,8 +83,11 @@ Our scoring reproduces the publisher's own `v8-in` numbers exactly (0.862 / 0.81
 | organizer `v8-in` (83 M, Oct 2026), released zero-shot run | **0.863** | **0.812** | **0.832** |
 
 Our B0 beats `ink_9um` on this fresh scroll as well (+0.05 to +0.07), but the organizers' newest model is clearly
-better here; our model claim is limited to the released `ink_9um`. A fine-tune of `v8-in` on our corrected training
-inventory is in progress ([`reports/V8IN_FINETUNE_PROTOCOL_20261014.md`](reports/V8IN_FINETUNE_PROTOCOL_20261014.md)).
+better here; our model claim is limited to the released `ink_9um`. **Negative result, reported as such:** we fine-tuned `v8-in` on our corrected training inventory under a protocol fixed
+in advance ([`reports/V8IN_FINETUNE_PROTOCOL_20261014.md`](reports/V8IN_FINETUNE_PROTOCOL_20261014.md)). It improved
+held-out training-store validation (0.804 -> 0.835) and PHerc1447 (0.777 -> 0.797 in our pipeline), but lost on 0841
+(0.768 -> 0.755) and MAN5 (0.488 -> 0.442), so it does not beat `v8-in` (macro 0.665 vs 0.678). On identical pixels,
+`v8-in` is also the best single model on 0841 (0.768; Reader v2 0.756, our B0 0.753).
 
 ![PHerc1447 w058](docs/figures/pred_pherc1447-w058.png)
 

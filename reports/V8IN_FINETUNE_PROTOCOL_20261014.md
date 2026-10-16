@@ -22,3 +22,16 @@ correct physical pooling). This is "v8-in + our data", credited as such; it is n
   pooled AUC, AP.
 - Claim requires the fine-tune to beat base v8-in on the macro and on at least 2 of 3 sources; otherwise reported as a
   null/negative result. 0009B and 0500P2 are reported separately as v8-in-exposed sources.
+
+## Amendment 2026-10-15 14:10 UTC (before any reverse-order test result existed for either model)
+The label-free direction rule (higher prediction spread on pilot tiles) chose "fwd" on PHerc1447 for both base and
+fine-tuned v8-in, giving chance-level AUC (0.47-0.51) for both, while the data publisher documents that these renders
+must be read reversed (v8-in's released predictions use --reverse and score 0.862 / 0.810). The rule chose "rev" on
+0841. From now on the direction is fixed to reverse for every test source, for both models: the publisher's
+documented convention for PHerc1447 and the convention used for every other model in this benchmark. The earlier
+batch-32 evaluations of base v8-in (0841, MAN5, 0009B, 0500P2) failed with CUDA out-of-memory on every segment and
+produced no numbers.
+
+## Result (2026-10-16)
+Rule not met. Macro (segment means) base 0.678 vs fine-tune 0.665; the fine-tune is better only on PHerc1447
+(+0.020), worse on 0841 (-0.014) and MAN5 (-0.045). Reported as a negative result.

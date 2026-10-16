@@ -1,5 +1,99 @@
 # Ink detection experiments (cross-scroll generalisation)
 
+## 2026-10-16 01:05 UTC: v8-in fine-tune VERDICT, negative (predeclared rule not met)
+Identical pipeline (v8in_eval_kernel.py, reverse, batch 8), per-segment AUC, base -> fine-tuned:
+0841 ag4252405 0.723 -> 0.709, ag4552896 0.798 -> 0.794, w00 0.784 -> 0.761 (source mean 0.768 -> 0.755);
+MAN5 0.488 -> 0.442; PHerc1447 w058 0.793 -> 0.820, w060 0.760 -> 0.774 (mean 0.777 -> 0.797).
+Macro over the three sources (segment means): base 0.678, fine-tune 0.665. The fine-tune wins 1 of 3 sources and loses
+the macro, so the claim fails. The validation gain on held-out training stores (0.804 -> 0.835) did not transfer to
+unseen scrolls. Also: base v8-in is the best single model on 0841 on identical pixels (0.768 vs Reader v2 0.756, our
+B0 0.753), and our 9.6 um store round trip costs v8-in about 0.06 AUC on PHerc1447 (0.793 / 0.760 vs 0.862 / 0.810
+from its native 8.64 um layers).
+
+## 2026-10-15 22:55 UTC
+- Base v8-in round-3 evaluation ran 8.7 h (the identical fine-tune job took 1 h 53 min) with no output: treated as hung
+  and superseded by an identical relaunch (same code and config, so the comparison stays fair).
+- U2-NetP Paris4 ablation (lop4-u2p) ended ERROR with an empty log: killed when the main account's GPU quota ran out.
+  No result; the U2-Net question remains open (the Colab U2-NetP run on the patch pack was at chance on PHerc1447).
+- Discord post drafted (submission/DISCORD_POST.md) for the user to post; issue villa#2107 still has no replies.
+
+## 2026-10-15 16:05 UTC: fine-tuned v8-in, round 3 COMPLETE (reverse, batch 8)
+0841 ag4252405 0.709 (AP 0.490), ag4552896 0.794 (0.694), w00 0.761 (0.584); MAN5 0.442 (0.246);
+PHerc1447 w058 0.820 (0.654), w060 0.774 (0.610). Base v8-in through the identical pipeline still running; verdict
+pending. (Base v8-in's released predictions on the native grid: 1447 0.862 / 0.810.)
+
+## 2026-10-15 14:10 UTC: v8-in evaluations, round 2 failed; round 3 launched
+- Batch-8 evaluations crashed on a JSON int64 bug after logging metrics; outputs (maps) lost. Logged metrics:
+  fine-tuned v8-in, reverse (label-free rule chose rev): 0841 ag4252405 0.709, ag4552896 0.794, w00 0.761; MAN5 0.442.
+  PHerc1447: the label-free rule chose fwd for BOTH models, giving chance (fine-tune 0.507 / 0.480; base 0.494 / 0.473).
+- The original base v8-in run on 0841/MAN5/0009B/0500P2 (batch 32) failed with OOM on every segment: no base numbers.
+- Protocol amended (direction fixed to reverse for all sources, both models; see protocol file). Round 3: fine-tune and
+  base, 1447 + 0841 + MAN5, reverse, batch 8, JSON fixed. Main-account GPU quota exhausted (resets 2026-10-17 00:00 UTC).
+
+## 2026-10-15: bug report filed; v8-in fine-tune run 2 done; test evaluation relaunched
+- Pyramid bug filed as ScrollPrize/villa#2107 (08:27 UTC, with the user's own commentary and attestation), text also
+  in the repo as pyramid-repair/BUG_REPORT.md.
+- v8-in fine-tune run 2 (memory guard worked; stopped cleanly at step 538): held-out-store validation AUC 0.804 (base)
+  -> 0.747 (75) -> 0.815 (150) -> **0.835 (225, selected)** -> 0.821 / 0.820 / 0.821 / 0.834. ft_best.safetensors saved.
+- First test evaluation of the fine-tune and of base v8-in on PHerc1447: every segment hit CUDA OOM (inference batch
+  32 over 2 T4 = 16 tiles of 96x256x256 per GPU). No result. Relaunched with batch 8. The 4.5 M U2-Net ablation
+  (lop4-v6u2) was stopped to save main-account quota; the U2-NetP ablation (lop4-u2p) continues.
+
+## 2026-10-15: identical-pixel ensembles with Reader v2, and letter shape (Kaggle CPU `vesuvius-score-ensembles`,
+`vesuvius-letter-shape`; score pack dataset `ehimennathan/vesuvius-score-pack`)
+Four sources (rev, 300k px/segment): Reader v2 alone macro 0.785, pooled 0.789, AP 0.645, 0841 0.756.
+**Predeclared all-model mean (6 models): macro 0.790, pooled 0.778, AP 0.643; 0841 0.771 (+0.015 over the best
+single model)**, 0009B 0.912, 0500P2 0.904, MAN5 0.571. Descriptive (post hoc): B0 s43 + Reader v2 macro 0.791,
+pooled 0.792, AP 0.650, **0841 0.780**: our B0 is complementary to Reader v2 on the never-seen scroll.
+PHerc1447: v8-in 0.832; predeclared all-model mean (7) 0.802 (weak members hurt); descriptive Reader v2 + v8-in
+**0.839**, AP 0.694.
+Letter shape (villa #1907 elongation, eval_forme.py as written; labels' own value in brackets), 0841 ag4252405 [25.0]:
+B0 s42 27.8, B0 s43 22.8, Reader v2 25.8, ink_9um 35.6/36.7, mean 20.4; ag4552896 [21.8]: 26.3, 23.1, 14.8, 16.1/21.2,
+17.4; w00 [20.0]: 27.7, 20.1, 11.2, 21.8/19.0, 14.8. PHerc1447 w058 [29.2]: 18.8, 19.1, 16.1, 16.4/18.2, v8-in 12.8;
+w060 [29.4]: 8.6, 6.6, 8.6, 8.7/13.9, v8-in 8.9. With 5-9 letters per segment and speckle inflating the metric
+(fragmented noise also scores high), no shape claim is made; ensembles that win on AUC lose elongation (blurring).
+
+## 2026-10-15: Reader v2 on our corrected stores + ensemble rule (declared before any ensemble score was computed)
+Reader v2 (domenicor046/reader-v2 step 40000, sha256 verified, run through villa's koine_machines infer exactly as
+ink_9um; reverse order predeclared like every other model; forward is near chance everywhere):
+0841 0.756 | PHerc1447 0.797 | MAN5 0.563 | 0009B 0.923 (exposed: other 0009B segments in its training) | 0500P2 0.896
+(exposed: in its training). Its published 0841 AUC (0.824, own pipeline from the native 9.36 um scan) is higher than
+on our 0841 inputs (pooled from the 4.681 um scan): it is sensitive to the input representation.
+Ensemble rule, fixed now: primary = equal-weight mean of probabilities of EVERY model evaluated on a source (ours:
+B0 s42, B0 s43, DINOv3; organizers': ink_9um s42, s43, v8-in where available; community: Reader v2), on identical
+pixels, reverse order. No member selection on test labels. Subsets (ours-only, public-only, pairs) are descriptive.
+
+## 2026-10-15: Colab lightweight results (negative) and a patch-pack validation caveat
+- E1b U2-NetP (1.15 M, no upsampling, 60 min, 5,660 steps, about 1.4 epochs): pack-validation AUC 0.527 -> 0.620 (1k)
+  -> 0.648 (2k) -> 0.701 (3k, selected) -> 0.561 (4k) -> 0.693 (5k). **PHerc1447: w058 0.495, w060 0.559, mean 0.527
+  (chance)**; v8-in 0.862 / 0.810. The rule (beat v8-in on both) is clearly not met.
+- v8-in as loaded on Colab reproduces its released PHerc1447 w058 map (r = 0.945 on a 768 px crop, mean 0.319 vs
+  0.315), so loading and inference are correct.
+- But v8-in scores **below chance on the pack's own validation patches** under every layout tried (512 patches:
+  as stored 0.407, depth-flipped 0.125, H/W transposed 0.379, both 0.109, labels transposed 0.390; 4,096 patches:
+  0.4635). Labels are ink = 255, 2.8 % positive (train 18.8 %). Either the validation patches do not align with their
+  labels as I read them, or a convention is unstated; they are not usable as a checkpoint-selection proxy here, and
+  E1b's selection was therefore unreliable as well.
+- Throughput limits (about 200 patches/s, about 1.4 epochs/h on a T4) make training lightweight models from scratch on
+  the pack non-competitive within free Colab. Line stopped; effort moved to Reader v2 / v8-in / fine-tune ensembles.
+- Community models found (2026-10-15): Reader v2 (domenicor046/reader-v2; 0841 0.824 vs human labels, 0.858 vs team
+  map; trained by distilling the team's ~2.4 um maps), Hecate (team; 0841 0.855). Our B0 (0.753 on 0841) is not
+  competitive with them. villa #1907 shows every ~9 um map renders 0841 letters as blobs (elongation metric).
+
+## 2026-10-15: lightweight models on the v8 patch pack (Colab T4), predeclared before any test result
+- Data: `YoussefMoNader/ink-8um-v8-patchpack` rev d67b1c1 (508,006 train / 43,249 val patches, 24x64x64 at 8.64 um),
+  the same data v8-in was trained on. Script `colab/lite_ink.py` (sha256 c4708c13..., identical on Colab).
+- Models: our 3D stem (with v8-in's per-tile InstanceNorm3d input) + U2-NetP body (1.15 M) or B0 SmallUNet (5.5 M).
+  Recipe: v8-in loss (0.5 Dice + 0.5 BCE, smoothing 0.25), fourth augment, rot90/flip, AdamW 2e-3 cosine, AMP, fixed
+  time budget. U2 variants add deep supervision on all six side outputs (as in the U2-Net paper).
+- Checkpoint selection: AUC on 4,096 fixed patches of the pack's own validation split (0009B, Frag3, Frag4) only.
+- Test: PHerc1447 w058/w060 (dataset rev 7e4d918), run through v8-in's released `predict_stack` (64 px tiles,
+  stride 21, layers reversed), AUC inside the certainty mask with label > 127, exactly the protocol that reproduces
+  v8-in's published 0.862 / 0.810.
+- Rule: a lightweight model "beats v8-in" only if its mean AUC exceeds 0.836 AND it beats v8-in on both windings.
+- Throughput (T4, batch 128): U2-NetP 240 patches/s without in-model upsampling, 125 with 2x; B0 268 / 168.
+  E1 (U2-NetP, 2x upsampling) was stopped after 100 steps for speed; E1b = U2-NetP, no upsampling, 60 min.
+
 ## 2026-10-15: U2-NetP (lightweight) ablation, predeclared before launch
 Same as the V6 entry below but U2-NetP widths (mid 16, out 64): 1.15 M parameters total with the 3D stem (B0 5.54 M).
 Same comparator and rule: counts as better than B0-256 only if the 8-segment Paris4 forward mean exceeds 0.721 and
@@ -30,7 +124,7 @@ least 6/8 segments. Caveat: trainer revisions since the B0 run (coverage repair,
 
 ## 2026-10-14: v8-in fine-tune on our corrected inventory (protocol `V8IN_FINETUNE_PROTOCOL_20261014.md`)
 More results on PHerc1447 (rev): DINOv3 w058 0.731, w060 0.660, pooled 0.690 (B0 s43 0.745; v8-in 0.832).
-Smoke `vesuvius-v8in-ft-smoke` (second account) (12 steps) passed after one fix (inference batch 32 OOM on T4; now 8):
+Smoke `vesuvius-v8in-ft-smoke` (12 steps) passed after one fix (inference batch 32 OOM on T4; now 8):
 - No training store has official validation-mask pixels, so the predeclared fallback holds out phercparis4-w09 and
   pherc1667-w031 entirely (7.8 M validation pixels).
 - Depth order from training labels: base v8-in reads our aligned training representation as stored (AUC 0.817 vs
