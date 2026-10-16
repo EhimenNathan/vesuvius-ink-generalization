@@ -3,8 +3,8 @@
 Work for the Vesuvius Challenge Progress Prize (October 2026). Three parts, in order of evidence strength:
 
 1. **A depth bug in the public ink-label surface pyramids.** In 18 of the 33 volumes of the organizers' `ink/` bucket,
-   levels 1–5 keep only the *first* slices of the 65-slice render instead of depth-pooling it, while their metadata
-   still declares an unchanged z-scale. Pixel-verified on all 18, with the 7 correctly built volumes as negative
+   level 2 keeps only the *first* 17 slices of the 65-slice render instead of depth-pooling it, while the metadata
+   still declares an unchanged z-scale (levels 1 and 3–5 have the same shortened depths). Pixel-verified on all 18, with the 7 correctly built volumes as negative
    controls (25/25 agree). It silently broke ink detection: the organizers' released `ink_9um` model scores
    0.54 AUC on its own training source fed the published level 2, and 0.91–0.93 after our rebuild.
 2. **A held-out cross-scroll benchmark at verified physical scale**, scoring every model on identical pixels, with
@@ -91,7 +91,11 @@ held-out training-store validation (0.804 -> 0.835) and PHerc1447 (0.777 -> 0.79
 
 ![PHerc1447 w058](docs/figures/pred_pherc1447-w058.png)
 
-Still running: `v8-in` on 0841 and MAN5 (both unseen by it), the `v8-in` fine-tune, and two U2-Net ablations (a 1.2 M-parameter U2-NetP and a 4.5 M U2-Net body on our 3D stem). The planned 30k-step B0 run was stopped after 12 h without completing; it produced no results.
+`v8-in` on 0841 and MAN5 (both unseen by it), through the same 9.6 µm / 9.362 µm stores as every other model: 0841
+0.723 / 0.798 / 0.784 (ag4252405 / ag4552896 / w00), MAN5 0.488. Through that pipeline it scores 0.793 / 0.760 on
+PHerc1447 versus 0.862 / 0.810 from its native 8.64 µm layers, so resampling our stores costs it about 0.06 there, and
+its 0841 numbers are probably an underestimate too. No results from: two U2-Net ablations (a 1.2 M-parameter U2-NetP
+and a 4.5 M U2-Net body on our 3D stem; stopped for GPU quota) and a 30k-step B0 run (stopped after 12 h).
 
 ## Honest limitations
 - The four test sources informed our design choices (patch size, loss, backbone): they are held-out sources, not an
